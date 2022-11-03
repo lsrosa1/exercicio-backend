@@ -1,6 +1,7 @@
 package com.example.desafio.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,8 +17,9 @@ public class Usuario {
     private Long id;
 
     @Column(name = "login")
-    private static String login;
+    private String login;
 
     @Column(name = "senha")
-    private static String senha;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String senha;
 }
