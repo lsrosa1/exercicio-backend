@@ -12,7 +12,7 @@ import java.util.*;
 @Entity
 @Data
 @Table
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode
 public class Cliente {
 
     @Id

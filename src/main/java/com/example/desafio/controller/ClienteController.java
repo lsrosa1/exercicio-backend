@@ -1,7 +1,7 @@
 package com.example.desafio.controller;
 
 import com.example.desafio.model.Cliente;
-import com.example.desafio.service.ClienteServiceImpl;
+import com.example.desafio.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/api/clientes")
 @RequiredArgsConstructor
 public class ClienteController {
 
-    private final ClienteServiceImpl clienteService;
+    private final ClienteService clienteService;
 
 
     @GetMapping

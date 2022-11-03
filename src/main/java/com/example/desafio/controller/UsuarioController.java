@@ -1,16 +1,24 @@
 package com.example.desafio.controller;
 
-import com.example.desafio.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.desafio.model.dto.UsuarioDTO;
+import com.example.desafio.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*")
+import java.util.Map;
+
 @RestController
-@RequestMapping("/administrador")
+@RequestMapping("/api/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
-    @Autowired
-    UsuarioRepository administradorRepository;
+    private final UsuarioService usuarioService;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UsuarioDTO userDTO) {
+
+        Map<String, Object> token = usuarioService.login(userDTO);
+        return ResponseEntity.ok().body(token);
+    }
 }
