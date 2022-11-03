@@ -14,8 +14,7 @@ import java.util.Optional;
 public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
-    private final EnderecoRepository enderecoRepository;
-
+    
     @Override
     public List<Cliente> listar(){
         List<Cliente> clientes = new ArrayList<>();
