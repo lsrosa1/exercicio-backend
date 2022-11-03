@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "endereco")
 @Data
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode
 public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,18 +34,5 @@ public class Endereco {
     @JsonIgnore
     private Set<Cliente> clientes = new HashSet<>();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Endereco endereco = (Endereco) o;
-
-        return Objects.equals(id, endereco.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
 }
