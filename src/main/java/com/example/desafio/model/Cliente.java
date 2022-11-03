@@ -1,37 +1,56 @@
 package com.example.desafio.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 @Entity
-@Table(name = "cliente")
+@Data
+@Table
+@EqualsAndHashCode(exclude = "id")
 public class Cliente {
-    @Getter @Setter
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Getter @Setter
-    @Column(name = "nome")
     private String nome;
 
-    @Getter @Setter
-    @Column(name = "sobrenome")
     private String sobrenome;
 
-    @Getter @Setter
-    @Column(name = "cpf")
-    private String CPF;
+    private String cpf;
 
-    @Getter @Setter
-    @Column(name = "nascimento")
-    private Date nascimento;
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
 
-    @Getter @Setter
-    @Column(name = "enderecos")
-    private List<String> enderecos;
+    @ManyToMany(fetch = FetchType.EAGER, cascade =  {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE,
+            CascadeType.REFRESH,
+    })
+    @JoinTable(
+            name = "cliente_enderecos",
+            joinColumns = @JoinColumn(name = "cliente_id"),
+            inverseJoinColumns = @JoinColumn(name = "endereco_id")
+    )
+    private Set<Endereco> enderecos = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cliente cliente = (Cliente) o;
+        return id == cliente.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
