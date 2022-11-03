@@ -10,13 +10,15 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "administrador")
-public class Administrador {
-    @Getter @Setter
-    @Column(name = "usuario")
-    private static String Usuario;
+@Getter
+@Setter
+public class Usuario {
 
-    @Getter @Setter
+    @Column(name = "usuario")
+    private static String login;
+
+
     @Column(name = "senha")
-    private static String Senha;
+    private static String senha;
 
 }
