@@ -10,5 +10,5 @@ public interface ClienteService {
     Cliente obterPorId(Long id);
     void criar(Cliente cliente);
     void remover(Long id);
-    Optional<Cliente> atualizar(Cliente cliente);
+    Cliente atualizar(Long id, Cliente cliente);
 }
