@@ -13,7 +13,6 @@ import java.util.List;
 public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
-
     @Override
     public List<Cliente> listar(){
         return clienteRepository.findAll();
