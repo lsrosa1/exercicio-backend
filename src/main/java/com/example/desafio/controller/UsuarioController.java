@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:8080/api")
 @RestController
 @RequestMapping("/administrador")
-public class AdministradorController {
+public class UsuarioController {
 
     @Autowired
     UsuarioRepository administradorRepository;
