@@ -16,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Date;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -34,20 +35,20 @@ public class ClientServiceTest {
     @Test
     @DisplayName("Deve salvar um Cliente")
     public void shouldSaveClient() {
-        Client client = Client.builder().cpf("123456").birthDate(LocalDate.of(2000, Month.MAY, 12)).lastName("josé").name("igor").addresses(null).build();
+        Client client = Client.builder().cpf("123456").birthDate(new Date()).lastName("josé").name("igor").adresses(null).build();
 
         Mockito.when(clientRepository.save(client)).thenReturn(
-                Client.builder().id(1).cpf("123456").birthDate(LocalDate.of(2000, Month.MAY, 12)).lastName("josé").name("igor").addresses(null).build()
+                Client.builder().id(1).cpf("123456").birthDate(new Date()).lastName("josé").name("igor").adresses(null).build()
         );
 
         Client clientSaved = clientService.create(client);
 
         Assertions.assertEquals(clientSaved.getId(), 1);
         Assertions.assertEquals(clientSaved.getCpf(), "123456");
-        Assertions.assertEquals(clientSaved.getBirthDate(), LocalDate.of(2000, Month.MAY, 12));
+        Assertions.assertEquals(clientSaved.getBirthDate(), new Date());
         Assertions.assertEquals(clientSaved.getLastName(), "josé");
         Assertions.assertEquals(clientSaved.getName(), "igor");
-        Assertions.assertNull(clientSaved.getAddresses());
+        Assertions.assertNull(clientSaved.getAdresses());
     }
 
 }
