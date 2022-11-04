@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Date;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -49,6 +50,24 @@ public class ClientServiceTest {
         Assertions.assertEquals(clientSaved.getLastName(), "josé");
         Assertions.assertEquals(clientSaved.getName(), "igor");
         Assertions.assertNull(clientSaved.getAdresses());
+    }
+
+    @Test
+    @DisplayName("Deve selecionar um Cliente especifico")
+    public void shouldSelectSpecificClient() {
+        Client client = Client.builder().id(1).name("Teste").lastName("Unitario").cpf("00000000000").adresses(null).build();
+
+        Mockito.when(clientRepository.findById(client.getId())).thenReturn(
+                Optional.ofNullable(Client.builder().id(1).name("Teste").lastName("Unitario").cpf("00000000000").adresses(null).build())
+        );
+
+        Client clientSearched = clientService.findById(client.getId());
+
+        Assertions.assertEquals(clientSearched.getId(), 1);
+        Assertions.assertEquals(clientSearched.getCpf(), "00000000000");
+        Assertions.assertEquals(clientSearched.getLastName(), "Unitario");
+        Assertions.assertEquals(clientSearched.getName(), "Teste");
+        Assertions.assertNull(clientSearched.getAdresses());
     }
 
 }
