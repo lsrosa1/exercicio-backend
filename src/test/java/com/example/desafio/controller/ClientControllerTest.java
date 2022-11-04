@@ -104,4 +104,17 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("data.name").value(clientUpdated.getName()));
     }
 
+    @Test
+    @WithMockUser
+    void shouldDeleteClientes() throws Exception {
+        long id = 1L;
+
+        Mockito.when(clientService.remove(Mockito.anyLong())).thenReturn(null);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete("/api/clientes/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request).andExpect(status().isOk());
+    }
+
 }
