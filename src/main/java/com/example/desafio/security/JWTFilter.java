@@ -1,6 +1,7 @@
 package com.example.desafio.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+
 import com.example.desafio.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,9 +37,8 @@ public class JWTFilter extends OncePerRequestFilter {
                 try {
                     String username = jwtUtils.validateTokenAndRetrieveSubject(jwt);
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(
-                                    username, userDetails.getPassword(), userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            username, userDetails.getPassword(), userDetails.getAuthorities());
 
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         SecurityContextHolder.getContext().setAuthentication(authToken);

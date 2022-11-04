@@ -1,7 +1,8 @@
 package com.example.desafio.config;
 
-import com.example.desafio.security.JWTFilter;
 import com.example.desafio.service.CustomUserDetailsService;
+import com.example.desafio.security.JWTFilter;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,8 +49,7 @@ public class SecurityConfig {
                 .userDetailsService(customUserDetailsService)
                 .exceptionHandling()
                 .authenticationEntryPoint(
-                        (req, res, exception) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Não Autorizado")
-                )
+                        (req, res, exception) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Não Autorizado"))
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -75,7 +75,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
