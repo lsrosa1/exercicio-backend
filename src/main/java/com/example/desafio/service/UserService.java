@@ -15,6 +15,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -37,8 +39,12 @@ public class UserService {
     }
 
     public String register(User user) {
-        userRepository.findByLogin(user.getLogin()).orElseThrow(UsernameAlreadyUsedException::new);
-        
+        Optional<User> optionalUser = userRepository.findByLogin(user.getLogin());
+
+        if(optionalUser.isPresent()){
+            throw new UsernameAlreadyUsedException();
+        }
+
         String passwordEncoded = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordEncoded);
         
