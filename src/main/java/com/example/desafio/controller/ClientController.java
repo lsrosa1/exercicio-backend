@@ -45,8 +45,11 @@ public class ClientController {
     @DeleteMapping("{id}")
     public ResponseEntity<ApiResponse> remove(@PathVariable Long id) {
         return ResponseEntity
-                .ok(ApiResponse.builder().status(HttpStatus.CREATED.value()).menssage("Cliente criado com sucesso!")
-                        .data(clientService.remove(id)).build());
+                .ok(ApiResponse.builder()
+                        .status(HttpStatus.CREATED.value())
+                        .menssage("Cliente criado com sucesso!")
+                        .data(clientService.remove(id))
+                        .build());
     }
 
     @PutMapping("{id}")

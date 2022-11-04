@@ -14,8 +14,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.Date;
 import java.util.Optional;
 
@@ -39,7 +37,7 @@ public class ClientServiceTest {
         Client client = Client.builder().cpf("123456").birthDate(new Date()).lastName("josé").name("igor").adresses(null).build();
 
         Mockito.when(clientRepository.save(client)).thenReturn(
-                Client.builder().id(1).cpf("123456").birthDate(new Date()).lastName("josé").name("igor").adresses(null).build()
+                Client.builder().id(1l).cpf("123456").birthDate(new Date()).lastName("josé").name("igor").adresses(null).build()
         );
 
         Client clientSaved = clientService.create(client);
@@ -55,10 +53,10 @@ public class ClientServiceTest {
     @Test
     @DisplayName("Deve selecionar um Cliente especifico")
     public void shouldSelectSpecificClient() {
-        Client client = Client.builder().id(1).name("Teste").lastName("Unitario").cpf("00000000000").adresses(null).build();
+        Client client = Client.builder().id(1l).name("Teste").lastName("Unitario").cpf("00000000000").adresses(null).build();
 
         Mockito.when(clientRepository.findById(client.getId())).thenReturn(
-                Optional.ofNullable(Client.builder().id(1).name("Teste").lastName("Unitario").cpf("00000000000").adresses(null).build())
+                Optional.ofNullable(Client.builder().id(1l).name("Teste").lastName("Unitario").cpf("00000000000").adresses(null).build())
         );
 
         Client clientSearched = clientService.findById(client.getId());
