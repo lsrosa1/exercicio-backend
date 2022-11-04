@@ -1,11 +1,8 @@
-package com.example.desafio.exception;
+package com.example.desafio.utils;
 
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Builder
 public class ApiError {
 

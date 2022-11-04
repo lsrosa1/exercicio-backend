@@ -1,6 +1,5 @@
 package com.example.desafio.model;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +10,8 @@ import javax.persistence.*;
 @Table(name = "usuario")
 @Getter
 @Setter
-public class Usuario {
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,5 +21,5 @@ public class Usuario {
 
     @Column(name = "senha")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String senha;
+    private String password;
 }

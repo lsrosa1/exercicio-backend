@@ -1,6 +1,5 @@
 package com.example.desafio.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,25 +12,32 @@ import java.util.Set;
 @Table(name = "endereco")
 @Data
 @EqualsAndHashCode
-public class Endereco {
+public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String rua;
-    private String cidade;
-    private String bairro;
-    private String numero;
-    private String cep;
+    @Column(name = "rua")
+    private String street;
 
+    @Column(name = "cidade")
+    private String city;
 
-    @ManyToMany(mappedBy = "enderecos", fetch = FetchType.LAZY, cascade = {
+    @Column(name = "bairro")
+    private String neighborhood;
+
+    @Column(name = "numero")
+    private String number;
+
+    @Column(name = "cep")
+    private String zipCode;
+
+    @ManyToMany(mappedBy = "adresses", fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.REFRESH,
     })
     @JsonIgnore
-    private Set<Cliente> clientes = new HashSet<>();
-
-
+    private Set<Client> clients = new HashSet<>();
 }

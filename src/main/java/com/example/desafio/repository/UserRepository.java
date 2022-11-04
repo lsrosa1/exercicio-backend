@@ -1,12 +1,12 @@
 package com.example.desafio.repository;
 
-import com.example.desafio.model.Usuario;
+import com.example.desafio.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    Optional<Usuario> findByLogin(String login);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByLogin(String login);
 }
