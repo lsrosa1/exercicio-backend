@@ -1,15 +1,11 @@
 package com.example.desafio.controller;
 
 import com.example.desafio.model.Client;
-import com.example.desafio.security.JWTFilter;
-import com.example.desafio.security.JWTUtils;
 import com.example.desafio.service.ClientService;
-import com.example.desafio.service.CustomUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +19,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Date;
 
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -70,6 +68,40 @@ public class ClientControllerTest {
         mvc.perform(request).andExpect(status().isCreated())
                 .andExpect(jsonPath("data.id").value(1))
                 .andExpect(jsonPath("data.name").value(client.getName()));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateClientes() throws Exception {
+        Client client = Client.builder()
+                .cpf("123456")
+                .birthDate(new Date())
+                .lastName("josé")
+                .name("igor")
+                .adresses(null)
+                .build();
+
+        Client clientUpdated = Client.builder()
+                .id(1)
+                .cpf("123456")
+                .birthDate(new Date())
+                .lastName("josé")
+                .name("igor")
+                .adresses(null)
+                .build();
+
+        String json = new ObjectMapper().writeValueAsString(client);
+
+        Mockito.when(clientService.update(Mockito.anyLong(), Mockito.any(Client.class))).thenReturn(clientUpdated);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put("/api/clientes/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("data.id").value(1))
+                .andExpect(jsonPath("data.name").value(clientUpdated.getName()));
     }
 
 }
