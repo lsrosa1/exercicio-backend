@@ -31,7 +31,7 @@ public class Client {
 
     @Column(name = "data_nascimento")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDate;
+    private Date birthDate;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,
