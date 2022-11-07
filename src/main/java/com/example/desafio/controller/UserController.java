@@ -35,8 +35,7 @@ public class UserController {
 
         String token = userService.register(user);
 
-        return ResponseEntity
-                .ok(ApiResponse.builder().status(HttpStatus.OK.value()).menssage("Usuario criado com sucesso")
-                        .data(token).build());
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder().status(HttpStatus.CREATED.value()).menssage("Usuario criado com sucesso")
+                .data(token).build());
     }
 }
