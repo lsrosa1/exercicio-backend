@@ -14,15 +14,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClientNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ApiError handlerNoClienteFoundException(ClientNotFoundException ex) {
+    public ApiError handlerNoClientFoundException(ClientNotFoundException ex) {
         return ApiError.builder().menssage("Cliente Não foi encontrado")
                 .status(String.valueOf(HttpStatus.NOT_FOUND.value())).build();
+    }
+
+    @ExceptionHandler(DuplicateCPFException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ApiError handlerDuplicateCPFException(DuplicateCPFException ex) {
+        return ApiError.builder().menssage("CPF duplicado" )
+                .status(String.valueOf(HttpStatus.BAD_REQUEST.value())).build();
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ApiError handlerNoClienteFoundException(InvalidCredentialsException ex) {
+    public ApiError handlerNoClientFoundException(InvalidCredentialsException ex) {
         return ApiError.builder().menssage("Credenciais Invalidas").status(String.valueOf(HttpStatus.NOT_FOUND.value()))
                 .build();
     }
