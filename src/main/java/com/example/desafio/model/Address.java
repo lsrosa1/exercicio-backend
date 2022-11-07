@@ -1,10 +1,7 @@
 package com.example.desafio.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,7 +10,10 @@ import java.util.Set;
 @Entity
 @Table(name = "endereco")
 @Data
+@Builder
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address {
 
     @Id

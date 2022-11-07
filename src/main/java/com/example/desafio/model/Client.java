@@ -1,6 +1,5 @@
 package com.example.desafio.model;
 
-import com.example.desafio.model.Address;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,7 +30,7 @@ public class Client {
 
     @Column(name = "data_nascimento")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,
