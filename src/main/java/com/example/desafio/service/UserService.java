@@ -30,7 +30,7 @@ public class UserService {
 
         try {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDTO.getLogin(), userDTO.getSenha());
+                    userDTO.getLogin(), userDTO.getPassword());
             authenticationManager.authenticate(usernamePasswordAuthenticationToken);
             return jwtUtils.generateToken(userDTO.getLogin());
         } catch (AuthenticationException ex) {

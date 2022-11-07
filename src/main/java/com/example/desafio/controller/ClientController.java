@@ -1,5 +1,6 @@
 package com.example.desafio.controller;
 
+import com.example.desafio.exception.ClientNotFoundException;
 import com.example.desafio.service.ClientService;
 import com.example.desafio.model.Client;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class ClientController {
 
     @GetMapping("{id}")
     public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
-        Client client = clientService.findById(id);
+        Client client = clientService.findById(id).orElseThrow(ClientNotFoundException::new);
         return ResponseEntity.ok(ApiResponse.builder().status(HttpStatus.OK.value()).menssage("")
                 .data(client).build());
     }
@@ -44,9 +45,14 @@ public class ClientController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<ApiResponse> remove(@PathVariable Long id) {
+        Client client = clientService.findById(id).orElseThrow(ClientNotFoundException::new);
+        clientService.remove(client);
         return ResponseEntity
-                .ok(ApiResponse.builder().status(HttpStatus.CREATED.value()).menssage("Cliente criado com sucesso!")
-                        .data(clientService.remove(id)).build());
+                .ok(ApiResponse.builder()
+                        .status(HttpStatus.CREATED.value())
+                        .menssage("Cliente removido com sucesso!")
+                        .data(true)
+                        .build());
     }
 
     @PutMapping("{id}")
@@ -54,7 +60,7 @@ public class ClientController {
         Client client = clientService.update(id, newClient);
 
         return ResponseEntity
-                .ok(ApiResponse.builder().status(HttpStatus.CREATED.value()).menssage("Cliente criado com sucesso!")
+                .ok(ApiResponse.builder().status(HttpStatus.CREATED.value()).menssage("Cliente atualizado com sucesso!")
                         .data(client).build());
     }
 }

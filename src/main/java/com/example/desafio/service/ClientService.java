@@ -2,12 +2,14 @@ package com.example.desafio.service;
 
 import com.example.desafio.exception.ClientNotFoundException;
 
+import com.example.desafio.exception.DuplicateCPFException;
 import com.example.desafio.model.Client;
 import com.example.desafio.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,22 +21,25 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-    public Client findById(Long id) {
-        return clientRepository.findById(id).orElseThrow(ClientNotFoundException::new);
+    public Optional<Client> findById(Long id) {
+        return clientRepository.findById(id);
     }
 
-    public Client create(Client cliente) {
-        try {
-            return clientRepository.save(cliente);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao tentar criar Cliente");
+    public Client create(Client client) {
+
+        if(clientRepository.existsByCpf(client.getCpf())) {
+            throw new DuplicateCPFException();
         }
+
+        return clientRepository.save(client);
     }
 
-    public Boolean remove(Long id) {
-        clientRepository.findById(id).orElseThrow(ClientNotFoundException::new);
-        clientRepository.deleteById(id);
-        return Boolean.TRUE;
+    public void remove(Client client) {
+        if(client == null || client.getId() == null) {
+            throw new IllegalArgumentException("Id do cliente não pode ser null");
+        }
+
+        clientRepository.delete(client);
     }
 
     public Client update(Long id, Client newClient) {
