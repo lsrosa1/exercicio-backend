@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -43,13 +44,20 @@ public class ClientService {
     }
 
     public Client update(Long id, Client newClient) {
-        return clientRepository.findById(id).map(client -> {
-            client.setCpf(newClient.getCpf());
-            client.setBirthDate(newClient.getBirthDate());
-            client.setAdresses(newClient.getAdresses());
-            client.setName(newClient.getName());
-            client.setLastName(newClient.getLastName());
-            return clientRepository.save(client);
-        }).orElseThrow(ClientNotFoundException::new);
+        Client client = clientRepository.findById(id).orElseThrow(ClientNotFoundException::new);
+
+        if (!Objects.equals(client.getCpf(), newClient.getCpf())) {
+            if(clientRepository.existsByCpf(newClient.getCpf())) {
+                throw new DuplicateCPFException();
+            }
+        }
+
+        client.setCpf(newClient.getCpf());
+        client.setBirthDate(newClient.getBirthDate());
+        client.setAdresses(newClient.getAdresses());
+        client.setName(newClient.getName());
+        client.setLastName(newClient.getLastName());
+
+        return clientRepository.save(client);
     }
 }

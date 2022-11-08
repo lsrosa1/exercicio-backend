@@ -7,6 +7,7 @@ import com.example.desafio.service.ClientService;
 import com.example.desafio.utils.GsonLocalDateAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.hibernate.validator.constraints.br.CPF;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -160,7 +161,7 @@ public class ClientControllerTest {
     @Test
     @DisplayName("Deve atualizar um Cliente")
     @WithMockUser
-    void shouldUpdateClients() throws Exception {
+    void shouldUpdateClient() throws Exception {
         Client client = createClient();
         client.setId(1L);
 
@@ -186,6 +187,32 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$.data.adresses").isArray())
                 .andExpect(jsonPath("$.data.birthDate").value(clientUpdated.getBirthDate().toString()))
                 .andExpect(jsonPath("$.data.cpf").value(clientUpdated.getCpf()));
+    }
+
+    @Test
+    @DisplayName("Erro ao tentar mudar cpf de um Cliente para um CPF existente")
+    @WithMockUser
+    void errorWhenUpdateClientWithDuplicateCPF() throws Exception {
+        Client client = createClient();
+        client.setId(1L);
+
+        Client clientUpdated = createClient();
+        clientUpdated.setId(1L);
+        clientUpdated.setName("Joao");
+        clientUpdated.setLastName("Alo");
+
+        String json = gson.toJson(client);
+
+        when(clientService.update(anyLong(), any(Client.class))).thenThrow(new DuplicateCPFException());
+
+        MockHttpServletRequestBuilder request = put(API_URL + client.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.menssage").value("CPF duplicado"));
     }
 
     @Test
