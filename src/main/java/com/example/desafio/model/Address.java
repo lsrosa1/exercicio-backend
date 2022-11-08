@@ -50,11 +50,23 @@ public class Address {
 
         Address address = (Address) o;
 
-        return Objects.equals(id, address.id);
+        if (!Objects.equals(id, address.id)) return false;
+        if (!Objects.equals(street, address.street)) return false;
+        if (!Objects.equals(city, address.city)) return false;
+        if (!Objects.equals(neighborhood, address.neighborhood))
+            return false;
+        if (!Objects.equals(number, address.number)) return false;
+        return Objects.equals(zipCode, address.zipCode);
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (street != null ? street.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (neighborhood != null ? neighborhood.hashCode() : 0);
+        result = 31 * result + (number != null ? number.hashCode() : 0);
+        result = 31 * result + (zipCode != null ? zipCode.hashCode() : 0);
+        return result;
     }
 }

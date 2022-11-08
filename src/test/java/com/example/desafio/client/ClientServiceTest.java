@@ -1,5 +1,6 @@
 package com.example.desafio.client;
 
+import com.example.desafio.exception.ClientNotFoundException;
 import com.example.desafio.exception.DuplicateCPFException;
 import com.example.desafio.model.Address;
 import com.example.desafio.model.Client;
@@ -36,35 +37,30 @@ public class ClientServiceTest {
     }
 
     @Test
-    @DisplayName("Deve criar um Cliente")
-    public void shouldCreateNewClient() {
+    @DisplayName("Deve listar os Clientes")
+    public void shouldListAllClients() {
 
-        Client clientMock = createClient();
-        clientMock.setId(1L);
-        when(clientRepository.save(any(Client.class))).thenReturn(clientMock);
+        Client client1 = createClient();
+        client1.setId(1L);
+        Client client2 = createClient();
+        client1.setId(1L);
+        List<Client> clientsMock = Arrays.asList(client1, client2);
+        when(clientRepository.findAll()).thenReturn(clientsMock);
 
-        Client client = createClient();
-        Client clientSaved = clientRepository.save(client);
+        List<Client> clientsFound = clientService.findAll();
 
-        assertEquals(clientSaved.getId(), clientMock.getId());
-        assertEquals(clientSaved.getCpf(), clientMock.getCpf());
-        assertEquals(clientSaved.getBirthDate(), clientMock.getBirthDate());
-        assertEquals(clientSaved.getLastName(), clientMock.getLastName());
-        assertEquals(clientSaved.getName(), clientMock.getName());
-        assertEquals(clientSaved.getAdresses().size(), 2);
+        assertEquals(clientsFound.size(), clientsMock.size());
     }
 
     @Test
-    @DisplayName("Erro ao tentar salvar Cliente com CPF duplicado")
-    public void shouldGiveErrorWhenCPFDuplicated() {
+    @DisplayName("Erro ao tentar selecionar um Cliente que não existe")
+    public void shouldGiveErrorWhenClientNotFound() {
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        when(clientRepository.existsByCpf(anyString())).thenReturn(true);
+        Long id = 1L;
+        Optional<Client> optionalClient = clientService.findById(id);
 
-        Client client = createClient();
-        DuplicateCPFException exception = assertThrows(DuplicateCPFException.class, () -> {clientService.create(client);});
-
-        assertEquals(DuplicateCPFException.class, exception.getClass());
-        verify(clientRepository, never()).save(client);
+        assertFalse(optionalClient.isPresent());
     }
 
     @Test
@@ -83,34 +79,39 @@ public class ClientServiceTest {
         assertEquals(clientSearched.get().getBirthDate(), clientMock.getBirthDate());
         assertEquals(clientSearched.get().getLastName(), clientMock.getLastName());
         assertEquals(clientSearched.get().getName(), clientMock.getName());
-        assertEquals(clientSearched.get().getAdresses().size(), 2);
+        assertEquals(clientSearched.get().getAdresses().size(), clientMock.getAdresses().size());
     }
 
     @Test
-    @DisplayName("Erro ao tentar selecionar um Cliente que não existe")
-    public void shouldGiveErrorWhenClientNotFound() {
-        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
+    @DisplayName("Erro ao tentar salvar Cliente com CPF duplicado")
+    public void shouldGiveErrorWhenCPFDuplicated() {
 
-        Long id = 1L;
-        Optional<Client> optionalClient = clientService.findById(id);
+        when(clientRepository.existsByCpf(anyString())).thenReturn(true);
 
-        assertFalse(optionalClient.isPresent());
+        Client client = createClient();
+        DuplicateCPFException exception = assertThrows(DuplicateCPFException.class, () -> {clientService.create(client);});
+
+        assertEquals(DuplicateCPFException.class, exception.getClass());
+        verify(clientRepository, never()).save(client);
     }
 
     @Test
-    @DisplayName("Deve listar os Clientes")
-    public void shouldListAllClients() {
+    @DisplayName("Deve criar um Cliente")
+    public void shouldCreateNewClient() {
 
-        Client client1 = createClient();
-        client1.setId(1L);
-        Client client2 = createClient();
-        client1.setId(1L);
-        List<Client> clientsMock = Arrays.asList(client1, client2);
-        when(clientRepository.findAll()).thenReturn(clientsMock);
+        Client clientMock = createClient();
+        clientMock.setId(1L);
+        when(clientRepository.save(any(Client.class))).thenReturn(clientMock);
 
-        List<Client> clientsFound = clientService.findAll();
+        Client client = createClient();
+        Client clientSaved = clientRepository.save(client);
 
-        assertEquals(clientsFound.size(), clientsMock.size());
+        assertEquals(clientSaved.getId(), clientMock.getId());
+        assertEquals(clientSaved.getCpf(), clientMock.getCpf());
+        assertEquals(clientSaved.getBirthDate(), clientMock.getBirthDate());
+        assertEquals(clientSaved.getLastName(), clientMock.getLastName());
+        assertEquals(clientSaved.getName(), clientMock.getName());
+        assertEquals(clientSaved.getAdresses().size(), clientMock.getAdresses().size());
     }
 
     @Test
@@ -133,6 +134,64 @@ public class ClientServiceTest {
         assertDoesNotThrow(() -> clientService.remove(client));
 
         verify(clientRepository, times(1)).delete(client);
+    }
+
+    @Test
+    @DisplayName("Erro ao tentar atualizar cliente inexistente")
+    public void shouldGiveErrorWhenUpdateClientNotFound() {
+
+        when(clientRepository.findById(anyLong())).thenThrow(new ClientNotFoundException());
+
+        Client client = createClient();
+        ClientNotFoundException exception = assertThrows(ClientNotFoundException.class, () -> {clientService.update(1L, client);});
+
+        assertEquals(ClientNotFoundException.class, exception.getClass());
+
+        verify(clientRepository, never()).existsByCpf(anyString());
+        verify(clientRepository, never()).save(client);
+    }
+
+    @Test
+    @DisplayName("Erro ao tentar atualizar cpf para um cpf ja existente")
+    public void shouldGiveErrorWhenUpdateCPFDuplicated() {
+        Client client = createClient();
+        client.setId(1L);
+
+        Client newClient = createClient();
+        newClient.setId(1L);
+        newClient.setCpf("321");
+
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(client));
+        when(clientRepository.existsByCpf(anyString())).thenReturn(true);
+
+        DuplicateCPFException exception = assertThrows(DuplicateCPFException.class, () -> {clientService.update(1L, newClient);});
+
+        assertEquals(DuplicateCPFException.class, exception.getClass());
+        verify(clientRepository, never()).save(client);
+    }
+
+    @Test
+    @DisplayName("Deve Atualizar um Cliente")
+    public void shouldUpdateClient() {
+
+        Client client = createClient();
+        client.setId(1L);
+
+        Client clientUpdated = createClient();
+        clientUpdated.setId(1L);
+        clientUpdated.setName("Joao");
+        clientUpdated.setLastName("Alo");
+
+        when(clientRepository.save(any(Client.class))).thenReturn(clientUpdated);
+
+        Client clientSaved = clientRepository.save(clientUpdated);
+
+        assertEquals(clientSaved.getId(), clientUpdated.getId());
+        assertEquals(clientSaved.getCpf(), clientUpdated.getCpf());
+        assertEquals(clientSaved.getBirthDate(), clientUpdated.getBirthDate());
+        assertEquals(clientSaved.getLastName(), clientUpdated.getLastName());
+        assertEquals(clientSaved.getName(), clientUpdated.getName());
+        assertEquals(clientSaved.getAdresses().size(), clientUpdated.getAdresses().size());
     }
 
 
