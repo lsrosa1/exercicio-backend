@@ -2,7 +2,7 @@ package com.example.desafio.service;
 
 import com.example.desafio.exception.InvalidCredentialsException;
 import com.example.desafio.exception.UsernameAlreadyUsedException;
-import com.example.desafio.model.User;
+import com.example.desafio.entity.User;
 import com.example.desafio.repository.UserRepository;
 import com.example.desafio.security.JWTUtils;
 import com.example.desafio.model.dto.UserDTO;

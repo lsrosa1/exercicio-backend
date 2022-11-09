@@ -1,4 +1,4 @@
-package com.example.desafio.model;
+package com.example.desafio.entity;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.*;
 
 @Entity
 @Data
-@Table
+@Table(name = "cliente")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

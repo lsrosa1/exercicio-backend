@@ -1,13 +1,12 @@
 package com.example.desafio.controller;
 
 import com.example.desafio.exception.DuplicateCPFException;
-import com.example.desafio.model.Address;
-import com.example.desafio.model.Client;
+import com.example.desafio.entity.Address;
+import com.example.desafio.entity.Client;
 import com.example.desafio.service.ClientService;
 import com.example.desafio.utils.GsonLocalDateAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.hibernate.validator.constraints.br.CPF;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

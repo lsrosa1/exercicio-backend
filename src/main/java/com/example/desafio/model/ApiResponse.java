@@ -1,4 +1,4 @@
-package com.example.desafio.utils;
+package com.example.desafio.model;
 
 import lombok.Builder;
 import lombok.Data;

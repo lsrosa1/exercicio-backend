@@ -3,7 +3,7 @@ package com.example.desafio.service;
 import com.example.desafio.exception.ClientNotFoundException;
 
 import com.example.desafio.exception.DuplicateCPFException;
-import com.example.desafio.model.Client;
+import com.example.desafio.entity.Client;
 import com.example.desafio.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

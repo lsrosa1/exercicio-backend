@@ -1,4 +1,4 @@
-package com.example.desafio.model;
+package com.example.desafio.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

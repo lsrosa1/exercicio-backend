@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.desafio.model.User;
+import com.example.desafio.entity.User;
 import com.example.desafio.repository.UserRepository;
 
 import java.util.Collections;

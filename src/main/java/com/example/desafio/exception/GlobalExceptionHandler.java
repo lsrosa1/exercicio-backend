@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.desafio.utils.ApiError;
+import com.example.desafio.model.ApiError;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,6 +24,14 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ApiError handlerDuplicateCPFException(DuplicateCPFException ex) {
         return ApiError.builder().menssage("CPF duplicado" )
+                .status(String.valueOf(HttpStatus.BAD_REQUEST.value())).build();
+    }
+
+    @ExceptionHandler(UsernameAlreadyUsedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ApiError handlerUsernameAlreadyUsedException(UsernameAlreadyUsedException ex) {
+        return ApiError.builder().menssage("Não foi possivel realizar o cadastro")
                 .status(String.valueOf(HttpStatus.BAD_REQUEST.value())).build();
     }
 
