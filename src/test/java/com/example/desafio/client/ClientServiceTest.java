@@ -2,8 +2,8 @@ package com.example.desafio.client;
 
 import com.example.desafio.exception.ClientNotFoundException;
 import com.example.desafio.exception.DuplicateCPFException;
-import com.example.desafio.model.Address;
-import com.example.desafio.model.Client;
+import com.example.desafio.entity.Address;
+import com.example.desafio.entity.Client;
 import com.example.desafio.repository.ClientRepository;
 import com.example.desafio.service.ClientService;
 import org.junit.jupiter.api.BeforeEach;

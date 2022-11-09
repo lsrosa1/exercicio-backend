@@ -16,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -90,10 +89,10 @@ public class UserControllerTest {
     @DisplayName("Deve criar um novo usuario")
     public void shouldCreateUser() throws Exception {
 
-        com.example.desafio.model.User userDTO = com.example.desafio.model.User.builder().login("igor").password("1234").build();
+        com.example.desafio.entity.User userDTO = com.example.desafio.entity.User.builder().login("igor").password("1234").build();
         String json = gson.toJson(userDTO);
 
-        Mockito.when(userService.register(Mockito.any(com.example.desafio.model.User.class))).thenReturn("token");
+        Mockito.when(userService.register(Mockito.any(com.example.desafio.entity.User.class))).thenReturn("token");
 
         MockHttpServletRequestBuilder request = post(API_URL + "/registrar")
                 .contentType(MediaType.APPLICATION_JSON)

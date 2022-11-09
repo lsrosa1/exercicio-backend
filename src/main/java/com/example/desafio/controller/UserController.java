@@ -1,9 +1,9 @@
 package com.example.desafio.controller;
 
-import com.example.desafio.model.User;
+import com.example.desafio.entity.User;
 import com.example.desafio.service.UserService;
 import com.example.desafio.model.dto.UserDTO;
-import com.example.desafio.utils.ApiResponse;
+import com.example.desafio.model.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
 

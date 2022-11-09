@@ -2,13 +2,13 @@ package com.example.desafio.controller;
 
 import com.example.desafio.exception.ClientNotFoundException;
 import com.example.desafio.service.ClientService;
-import com.example.desafio.model.Client;
+import com.example.desafio.entity.Client;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.desafio.utils.ApiResponse;
+import com.example.desafio.model.ApiResponse;
 
 import java.util.List;
 
